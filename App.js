@@ -43,7 +43,7 @@ export default function App() {
                 );
               }
             },
-            tabBarInactiveTintColor: "gray",
+            tabBarInactiveTintColor: "#333",
             tabBarActiveTintColor: "tomato",
           })}
         >
