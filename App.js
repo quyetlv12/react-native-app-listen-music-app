@@ -1,42 +1,42 @@
-import { Ionicons, AntDesign, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HistoryScreen from "./navigator/history/HistoryScreen";
-import HomeScreen from "./navigator/home/Home";
-import LearningScreen from "./navigator/learning/LearingScreen";
-import { Provider } from "react-redux";
+import Download from "./screens/download";
+import List from "./screens/list";
+import Player from "./screens/player";
+import { NativeBaseProvider } from "native-base";
 export default function App() {
   const Tab = createBottomTabNavigator();
   const SettingsStack = createNativeStackNavigator();
   const HomeStack = createNativeStackNavigator();
   return (
-    // <Provider store={}>
+    <NativeBaseProvider>
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => {
-              if (route.name === "Home") {
+              if (route.name === "playing") {
                 return (
                   <AntDesign
-                    name={focused ? "home" : "home"}
+                    name={focused ? "play" : "play"}
                     size={size}
                     color={color}
                   />
                 );
-              } else if (route.name === "Done") {
+              } else if (route.name === "Danh sách nhạc") {
                 return (
                   <Ionicons
-                    name={focused ? "checkmark-done" : "checkmark-done"}
+                    name={focused ? "list" : "list"}
                     size={size}
                     color={color}
                   />
                 );
-              } else if (route.name === "History") {
+              } else if (route.name === "Tải về") {
                 return (
                   <FontAwesome
-                    name={focused ? "history" : "history"}
+                    name={focused ? "download" : "download"}
                     size={size}
                     color={color}
                   />
@@ -47,31 +47,33 @@ export default function App() {
             tabBarActiveTintColor: "tomato",
           })}
         >
-          <Tab.Screen name="Home">
+          <Tab.Screen name="playing">
             {() => (
               <SettingsStack.Navigator>
-                <SettingsStack.Screen name="Trang chủ" component={HomeScreen} />
+                <SettingsStack.Screen name="Đang phát" component={Player} />
               </SettingsStack.Navigator>
             )}
           </Tab.Screen>
-          <Tab.Screen name="Done">
+          <Tab.Screen name="Danh sách nhạc">
             {() => (
               <HomeStack.Navigator>
                 <HomeStack.Screen
-                  name="Đã hoàn thành"
-                  component={LearningScreen}
+                  headerShown={false}
+                  name="Danh sách"
+                  component={List}
                 />
               </HomeStack.Navigator>
             )}
           </Tab.Screen>
-          <Tab.Screen name="History">
+          <Tab.Screen name="Tải về">
             {() => (
               <HomeStack.Navigator>
-                <HomeStack.Screen name="Lịch sử" component={HistoryScreen} />
+                <HomeStack.Screen name="Tải nhạc" component={Download} />
               </HomeStack.Navigator>
             )}
           </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
+    </NativeBaseProvider>
   );
 }
